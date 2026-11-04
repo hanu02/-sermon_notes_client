@@ -9,6 +9,8 @@ export default function Notes(){
  const [title, setTitle] =useState('');
  const [scriptureReferencing, setScriptureReferencing] = useState('');
  const [content, setContent] = useState('');
+ const [application ,setApplication] = useState('')
+ const [prayer , setPrayer] = useState('')
  useEffect( () => {
     const fetchNotes = async () => {
         try{
@@ -37,12 +39,14 @@ export default function Notes(){
   e.preventDefault();
   try {
     // send the sermon to the backend
-    const response = await api.post('/notes',{ title,scriptureReferencing,content})
+    const response = await api.post('/notes',{ title,scriptureReferencing,content,application,prayer})
     //new notes
     setNotes([response.data, ...notes])
     setTitle('');
     setScriptureReferencing('');
     setContent('');
+    setApplication('');
+    setPrayer('');
   } catch (err) {
     
     toast.error(err.response?.data?.message || 'Could not save sermon');
@@ -102,6 +106,21 @@ return (
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
+          />
+          {/* Sermon application Textarea */}
+          <textarea 
+            className="border border-gray-300 rounded-lg p-3 w-full min-h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+            placeholder="Type your application here..."
+            value={application}
+            onChange={(e) => setApplication(e.target.value)}
+            required
+          />
+          <input 
+            className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="text"
+            placeholder="Scripture (e.g. James 2:14-26)"
+            value={prayer}
+            onChange={(e) => setPrayer(e.target.value)}
           />
 
           {/* Submit Button */}
